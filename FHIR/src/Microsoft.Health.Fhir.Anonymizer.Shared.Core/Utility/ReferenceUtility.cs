@@ -13,7 +13,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
             // Regex for absolute or relative url reference, https://www.hl7.org/fhir/references.html#literal
             new Regex(@"^(?<prefix>((http|https)://([A-Za-z0-9\\\/\.\:\%\$])*)?("
                 + String.Join("|", ModelInfo.SupportedResources)
-                + @")\/)(?<id>[A-Za-z0-9\-\.]{1,64})(?<suffix>\/_history\/[A-Za-z0-9\-\.]{1,64})?$"),
+                + @")\/)(?<id>[A-Za-z0-9\-\.]{1,128})(?<suffix>\/_history\/[A-Za-z0-9\-\.]{1,128})?$"),
             // Regex for oid reference https://www.hl7.org/fhir/datatypes.html#oid
             new Regex(@"^(?<prefix>urn:oid:)(?<id>[0-2](\.(0|[1-9][0-9]*))+)(?<suffix>)$"),
             // Regex for uuid reference https://www.hl7.org/fhir/datatypes.html#uuid
