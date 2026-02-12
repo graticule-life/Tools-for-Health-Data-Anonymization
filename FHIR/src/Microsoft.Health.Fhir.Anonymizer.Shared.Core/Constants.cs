@@ -15,6 +15,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core
         internal const string AgeTypeName = "Age";
         internal const string BundleTypeName = "Bundle";
         internal const string ReferenceTypeName = "Reference";
+        internal const string UrlTypeName = "url";
+        internal const string UriTypeName = "uri";
 
         // NodeName constants
         internal const string PostalCodeNodeName = "postalCode";

@@ -41,6 +41,13 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Extensions
             return node != null && string.Equals(node.InstanceType, Constants.ReferenceTypeName, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        public static bool IsUrlNode(this ITypedElement node)
+        {
+            return node != null &&
+                   (string.Equals(node.InstanceType, Constants.UrlTypeName, StringComparison.InvariantCultureIgnoreCase) ||
+                    string.Equals(node.InstanceType, Constants.UriTypeName, StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public static bool IsPostalCodeNode(this ITypedElement node)
         {
             return node != null && string.Equals(node.Name, Constants.PostalCodeNodeName, StringComparison.InvariantCultureIgnoreCase);
