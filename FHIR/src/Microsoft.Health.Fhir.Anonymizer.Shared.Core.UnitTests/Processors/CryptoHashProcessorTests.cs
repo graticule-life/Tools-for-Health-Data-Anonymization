@@ -24,6 +24,18 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.UnitTests.Processors
             yield return new object[] { new FhirDateTime("2017-01-01T00:00:00.000Z"), "4c765fc04a6f9967d493ff39238d47993c709d3392a72060efeff285cf7b2501" };
         }
 
+        public static IEnumerable<object[]> GetUrlNodesForCryptoHash()
+        {
+            yield return new object[] { new FhirUrl(string.Empty), string.Empty };
+            yield return new object[] { new FhirUrl("Binary/emNcu.QDEFoP0dFgj"), "Binary/4ec4b2eecdc9585039c3bc2cbd11075ed2b8edaf6598bc3ca91933b3b95af104" };
+            yield return new object[] { new FhirUrl("Patient/example"), "Patient/698d54f0494528a759f19c8e87a9f99e75a5881b9267ee3926bcf62c992d84ba" };
+            yield return new object[] { new FhirUrl("http://example.org/fhir/Observation/apo89654/_history/2"),
+                "http://example.org/fhir/Observation/b1e85ca33baf76575ad28588af85b8f10c0dd40e9ed8cd57cdb7ae94ccd75695/_history/2" };
+            yield return new object[] { new FhirUrl("http://example.com/nonreference"), "892d091b2aed25b51381757541a5a853b9857ba7807b9a448142cc8f1b61df69" };
+            yield return new object[] { new FhirUri("Patient/example"), "Patient/698d54f0494528a759f19c8e87a9f99e75a5881b9267ee3926bcf62c992d84ba" };
+            yield return new object[] { new FhirUri("http://example.com/nonreference"), "892d091b2aed25b51381757541a5a853b9857ba7807b9a448142cc8f1b61df69" };
+        }
+
         public static IEnumerable<object[]> GetReferenceNodesForCryptoHash()
         {
             yield return new object[] { new ResourceReference(string.Empty), string.Empty };
@@ -43,6 +55,16 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.UnitTests.Processors
         [Theory]
         [MemberData(nameof(GetNonReferenceNodesForCryptoHash))]
         public void GivenANonReferenceNode_WhenCryptoHash_HashedNodeShouldBeReturned(Element element, string expectedValue)
+        {
+            var processor = new CryptoHashProcessor(TestHashKey);
+            var node = CreateNodeFromElement(element);
+            processor.Process(node);
+            Assert.Equal(expectedValue, node.Value);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetUrlNodesForCryptoHash))]
+        public void GivenAUrlNode_WhenCryptoHash_PartlyHashedNodeShouldBeReturned(Element element, string expectedValue)
         {
             var processor = new CryptoHashProcessor(TestHashKey);
             var node = CreateNodeFromElement(element);
